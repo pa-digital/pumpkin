@@ -73,7 +73,7 @@ end
 @status_types = ["Not run","Descoped", "In Progress", "Passed", "Failed", "Blocked"]
 @status_types_colours = ["", "", "info", "success", "danger", "warning", "info"]
 
-open('report.html', 'w') { |f|
+open('output/report.html', 'w') { |f|
   f << "<html>"
   f << "<head>"
   f << '<link rel="stylesheet" href="assets/bootstrap.min.css">'
