@@ -48,9 +48,7 @@ h3 {
   .remove-feature,
   .remove-scenario,
   .save-report,
-  .report-title,
-  .report-date,
-  .report-description,
+  .form-group,
   .scenario-status,
   .scenario-steps {
     display: none;
