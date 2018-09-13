@@ -31,6 +31,11 @@ h3 {
   margin-bottom: 30px;
 }
 
+.scenario-steps {
+  margin-top: -0.5em;
+  margin-bottom: 0;
+}
+
 .report-title-print,
 .report-description-print,
 .scenario-status-print,
@@ -49,6 +54,11 @@ h3 {
   .scenario-status,
   .scenario-steps {
     display: none;
+  }
+
+  body.print-scenario-steps .scenario-steps {
+    display: block;
+    margin-top: 0.5em;
   }
 
   .report-title-print,

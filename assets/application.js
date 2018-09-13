@@ -99,6 +99,14 @@ function handleRemoveScenarioClick(e) {
   });
 }
 
+function handlePrintStepsChange(e) {
+  if ($(this).val() == 'yes') {
+    $('body').addClass('print-scenario-steps');
+  } else {
+    $('body').removeClass('print-scenario-steps');
+  }
+}
+
 function statusColour(status) {
   var statusTypeColours = ["", "secondary", "info", "success", "danger", "warning", "info"];
   var statusTypes = window.STATUS_TYPES;
@@ -143,5 +151,6 @@ $(function () {
   $('.report-description').on('change', handleDescriptionChange).trigger('change');
   $('.remove-feature').on('click', handleRemoveFeatureClick);
   $('.remove-scenario').on('click', handleRemoveScenarioClick);
+  $('#print-steps').on('change', handlePrintStepsChange);
   recalculateStatusTotals();
 });

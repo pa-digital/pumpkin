@@ -66,7 +66,7 @@ def format_status status
 end
 
 def format_steps scenario
-  html = '<p class="scenario-steps small text-muted" style="margin-bottom:0;margin-top:-.5em;">'
+  html = '<p class="scenario-steps small text-muted">'
   html += scenario.steps.map{|step| "#{step.keyword} #{step.text}"}.join('<br>')
   html += '</p>'
   html
@@ -93,6 +93,7 @@ open('output/report.html', 'w') { |f|
   f << "<div class='form-group'><input type='text' placeholder='Project Name' class='form-control report-title'/></div>"
   f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{Time.now.strftime("%d/%m/%Y")}'/></div>"
   f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'></textarea></div>"
+  f << "<div class='form-group'><div class='form-check'><input class='form-check-input' type='checkbox' value='yes' id='print-steps'><label class='form-check-label' for='print-steps'>Print scenario steps</label></div></div>"
   f << "<a target='iframe' download='report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a>"
   f << "<h3>Summary</h3>"
   f << "<p class='report-description-print'></p>"
