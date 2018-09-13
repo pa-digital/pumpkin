@@ -79,6 +79,7 @@ end
 open('output/report.html', 'w') { |f|
   f << "<html>"
   f << "<head>"
+  f << "<meta charset='utf-8'/>"
   f << "<style type='text/css'>#{File.read('assets/bootstrap.min.css')}</style>"
   f << "<style type='text/css'>#{File.read('assets/application.css')}</style>"
   f << "<script>window.STATUS_TYPES = #{@status_types.to_json};</script>"
