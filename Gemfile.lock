@@ -9,6 +9,7 @@ GEM
     gherkin (5.1.0)
     json (2.1.0)
     multi_json (1.13.1)
+    slop (4.6.2)
 
 PLATFORMS
   ruby
@@ -16,6 +17,7 @@ PLATFORMS
 DEPENDENCIES
   colored
   cuke_modeler
+  slop
 
 BUNDLED WITH
    1.16.1
