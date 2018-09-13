@@ -1,0 +1,84 @@
+* {
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact;
+}
+
+.container {
+  padding: 50px 0;
+}
+
+.logo {
+  display: inline-block;
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 136.2 275.7' enable-background='new 0 0 136.2 275.7' xml:space='preserve'%3E%3Cpath id='XMLID_30_' fill='%23FB3457' d='M0,205.7V43L37.4,0v50.4L136.2,70l0,162.7v0l-37.4,43v-50.4L0,205.7z M117.5,84.1L18.7,64.5 v127.1l98.8,19.6V84.1z M37.4,86l61.4,12.2V116l-42.7-8.5v19.2l39.8,7.9v17.8l-39.8-7.9v36.6l-18.7-3.7V86z'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100px;
+  height: 100px;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  width: 75%;
+}
+
+textarea {
+  height: 150px;
+}
+
+h3 {
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+
+.report-title-print,
+.report-description-print,
+.scenario-status-print,
+.report-date-print {
+  display: none;
+}
+
+@media print {
+
+  .remove-feature,
+  .remove-scenario,
+  .save-report,
+  .report-title,
+  .report-date,
+  .report-description,
+  .scenario-status,
+  .scenario-steps {
+    display: none;
+  }
+
+  .report-title-print,
+  .report-date-print {
+    display: inline-block;
+  }
+
+  .report-description-print {
+    display: block
+  }
+
+  .report-description-print br {
+    display: block;
+    content: '';
+    margin-bottom: 0.75em;
+  }
+
+  .report-description-print strong {
+    font-weight: bold;
+  }
+
+  .scenario-status-print {
+    display: inline-block;
+  }
+
+  .scenario p {
+    margin-bottom: 0;
+  }
+
+  .feature {
+    page-break-before: always;
+  }
+}
