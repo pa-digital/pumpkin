@@ -85,8 +85,4 @@ h3 {
   .scenario p {
     margin-bottom: 0;
   }
-
-  .feature {
-    page-break-before: always;
-  }
 }
