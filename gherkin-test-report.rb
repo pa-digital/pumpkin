@@ -40,7 +40,8 @@ end
 def load_feature_files
   files = Dir.glob("#{FEATURE_FILE_PATH}/**/*.feature").map{|feature_file|
     feature = CukeModeler::FeatureFile.new(feature_file)
-    print_message("Found feature '#{feature.feature.name}' with #{feature.feature.scenarios.count} scenarios")
+    print_message(feature_file) if feature.feature.nil?
+    print_message("Found feature '#{feature.feature.name}' with #{feature.feature.test_case_count} scenarios")
     feature
   }
   exit_with_error("No feature files found in #{FEATURE_FILE_PATH}") if files.count == 0
@@ -67,8 +68,21 @@ end
 
 def format_steps scenario
   html = '<p class="scenario-steps small text-muted">'
-  html += scenario.steps.map{|step| "#{step.keyword} #{step.text}"}.join('<br>')
+  html += scenario.steps.map{|step| CGI.escapeHTML("#{step.keyword} #{step.text}")}.join('<br>')
   html += '</p>'
+  if scenario.respond_to? :examples
+    html += '<pre class="small text-muted">' + scenario.examples[0].to_s + '</pre>'
+  end
+  html
+end
+
+def format_scenarios feature_name, items
+  html = ''
+  items.each_with_index do |scenario, i|
+    scenario_name = scenario.name
+    scenario_status = scenario_status(feature_name, scenario_name)
+    html += "<tr class='scenario'><td style='width:1px' class='text-muted index'></td><td><button class='btn btn-outline-secondary btn-sm float-right remove-scenario' tabindex='-1'>Remove scenario</button><p>#{scenario_name.capitalize}</p>#{format_steps(scenario)}</td><td style='width:1px'>#{format_status(scenario_status)}</td></tr>"
+  end
   html
 end
 
@@ -109,11 +123,8 @@ open('output/report.html', 'w') { |f|
     f << "<table class='table table-condensed'>"
     f << "<thead><th colspan='2'>Scenario</th><th style='width:1px'>Status</th></thead>"
     f << "<tbody>"
-    feature_file.feature.scenarios.each_with_index do |scenario, i|
-      scenario_name = scenario.name
-      scenario_status = scenario_status(feature_name, scenario_name)
-      f << "<tr class='scenario'><td style='width:1px' class='text-muted index'></td><td><button class='btn btn-outline-secondary btn-sm float-right remove-scenario' tabindex='-1'>Remove scenario</button><p>#{scenario_name.capitalize}</p>#{format_steps(scenario)}</td><td style='width:1px'>#{format_status(scenario_status)}</td></tr>"
-    end
+    f << format_scenarios(feature_name, feature_file.feature.scenarios)
+    f << format_scenarios(feature_name, feature_file.feature.outlines)
     f << "</tbody>"
     f << "</table>"
     f << "</div>"
