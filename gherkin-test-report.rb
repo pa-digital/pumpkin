@@ -3,6 +3,7 @@
 require 'cuke_modeler'
 require 'slop'
 require 'colored'
+require 'cgi'
 
 def print_ok_message(message)
   print ' ✔ '.green
