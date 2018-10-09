@@ -18,7 +18,3 @@ The script accepts the following arguments:
 * `--features` (or `-f`) is the path to a local directory of gherkin feature files
 * `--cucumberjson` (or `-c`) is the path to a local JSON file containing a Cucumber test report (optional)
 * `--open` (or `-o`) to open the HTML report in your browser after the script completes
-
-### Where do I find the Cucumber JSON file?
-
-If you Cucumber tests are running on Jenkins, the "Cucumber HTML Reports" Jenkins plugin will provide a link from the build job to the HTML report (e.g. https://jenkins2.tools.fridayengineering.net/view/Aetna/job/aetna-vhealth-web-auto-tests/lastCompletedBuild/cucumber-html-reports/overview-steps.html). To get the same report in JSON format, strip the URL back to the `/cucumber-html-reports` section, and add the following to the URL: `.cache/json/cucumber.json` (e.g. https://jenkins2.tools.fridayengineering.net/view/Aetna/job/aetna-vhealth-web-auto-tests/lastCompletedBuild/cucumber-html-reports/.cache/json/cucumber.json). Save this JSON file to your computer.
