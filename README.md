@@ -18,3 +18,7 @@ The script accepts the following arguments:
 * `--features` (or `-f`) is the path to a local directory of gherkin feature files
 * `--cucumberjson` (or `-c`) is the path to a local JSON file containing a Cucumber test report (optional)
 * `--open` (or `-o`) to open the HTML report in your browser after the script completes
+
+## Example
+
+![Example report](screenshot.png)
