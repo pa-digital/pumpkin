@@ -71,7 +71,15 @@ def scenario_status feature_name, scenario_name
 end
 
 def format_status status
-  return "<span class='scenario-status-print'></span><select class='scenario-status custom-select' style='width:130px;'>#{@status_types.map{|s| "<option #{'selected="selected"' if s.downcase == status}>#{s}</option>"}}</select>"
+  return "<span class='scenario-status-print'></span>#{scenario_status_dropdown(status)}"
+end
+
+def feature_status_dropdown
+  return "<select class='feature-status custom-select' style='width:130px;'><option value=''>Change all</option>#{@status_types.map{|s| "<option>#{s}</option>"}}</select>"
+end
+
+def scenario_status_dropdown status
+  return "<select class='scenario-status custom-select' style='width:130px;'>#{@status_types.map{|s| "<option #{'selected="selected"' if s.downcase == status}>#{s}</option>"}}</select>"
 end
 
 def format_steps scenario
@@ -127,7 +135,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   @feature_files.each do |feature_file|
     feature_name = feature_file.feature.name
     f << "<div class='feature'>"
-    f << "<h3>Feature: #{feature_name} <button class='btn btn-outline-secondary btn-sm float-right remove-feature'>Remove feature</button></h3>"
+    f << "<h3>Feature: #{feature_name} <div class='float-right feature-actions'><button class='btn btn-outline-secondary btn-sm remove-feature'>Remove feature</button><div class='float-right'>#{feature_status_dropdown}</div></div></h3>"
     f << "<table class='table table-condensed'>"
     f << "<thead><th colspan='2'>Scenario</th><th style='width:1px'>Status</th></thead>"
     f << "<tbody>"

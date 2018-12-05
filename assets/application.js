@@ -53,7 +53,17 @@ function saveHTML(e) {
   return false;
 }
 
-function handleSelectChange(e) {
+function handleFeatureSelectChange(e) {
+  var select = $(e.target);
+  var value = select.val();
+  if (!value) return;
+  var featureTable = select.parents('.feature').find('table')
+  featureTable.find('select.scenario-status').val(value);
+  select.val('');
+  recalculateStatusTotals();
+}
+
+function handleScenarioSelectChange(e) {
   var select = $(e.target);
   var value = select.val();
   select.find('option:selected').attr('selected', 'selected');
@@ -145,7 +155,8 @@ function setFileName() {
 }
 
 $(function () {
-  $('select').on('change', handleSelectChange);
+  $('select.feature-status').on('change', handleFeatureSelectChange);
+  $('select.scenario-status').on('change', handleScenarioSelectChange);
   $('.report-title').on('change', handleTitleChange).trigger('change');
   $('.report-date').on('change', handleDateChange).trigger('change');
   $('.report-description').on('change', handleDescriptionChange).trigger('change');

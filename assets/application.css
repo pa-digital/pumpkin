@@ -31,6 +31,19 @@ h3 {
   margin-bottom: 30px;
 }
 
+.feature-actions button {
+  position: relative;
+  top: 5px;
+}
+
+.feature-actions .custom-select {
+  margin-left: 20px;
+}
+
+.custom-select {
+  font-size: 0.875rem;
+}
+
 .scenario-steps {
   margin-top: -0.5em;
   margin-bottom: 0;
@@ -50,7 +63,8 @@ h3 {
   .save-report,
   .form-group,
   .scenario-status,
-  .scenario-steps {
+  .scenario-steps,
+  .feature-actions {
     display: none;
   }
 
