@@ -29,7 +29,8 @@ end
 FEATURE_FILE_PATH = opts[:features]
 CUCUMBER_REPORT = opts[:cucumberjson]
 OPEN_AFTER = opts[:open]
-FILENAME = 'output/report.html'
+OUTPUT_DIRECTORY = 'output'
+OUTPUT_FILENAME = 'report.html'
 
 def load_cucumber_json
   return {} if CUCUMBER_REPORT.nil?
@@ -39,14 +40,20 @@ def load_cucumber_json
 end
 
 def load_feature_files
-  files = Dir.glob("#{FEATURE_FILE_PATH}/**/*.feature").map{|feature_file|
+  files = Dir.glob("#{FEATURE_FILE_PATH}/**/*.feature").sort.map{|feature_file|
     feature = CukeModeler::FeatureFile.new(feature_file)
-    print_message(feature_file) if feature.feature.nil?
-    print_message("Found feature '#{feature.feature.name}' with #{feature.feature.test_case_count} scenarios")
-    feature
+    order = feature.feature.tags.select{|tag| tag.to_s.start_with?('@report-order-')}.first.to_s.gsub(/[^0-9]/, '').to_i
+    order = 999 if order == 0
+    {
+      feature: feature,
+      order: order
+    }
   }
   exit_with_error("No feature files found in #{FEATURE_FILE_PATH}") if files.count == 0
-  files
+  files.sort_by{|f| f[:order]}.map{|f|
+    print_message("Found feature '#{f[:feature].feature.name}' with #{f[:feature].feature.scenarios.count} scenarios")
+    f[:feature]
+  }
 end
 
 def scenario_status feature_name, scenario_name
@@ -91,7 +98,7 @@ end
 @feature_files = load_feature_files
 @status_types = ["Not run","Descoped", "In Progress", "Passed", "Failed", "Blocked"]
 
-open('output/report.html', 'w') { |f|
+open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<html>"
   f << "<head>"
   f << "<meta charset='utf-8'/>"
@@ -136,5 +143,5 @@ open('output/report.html', 'w') { |f|
   f << "</html>"
 }
 
-print_ok_message("Report generated at #{FILENAME}")
-`open #{FILENAME}` if OPEN_AFTER
+print_ok_message("Report generated at #{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}")
+`open #{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}` if OPEN_AFTER
