@@ -19,6 +19,18 @@ The script accepts the following arguments:
 * `--cucumberjson` (or `-c`) is the path to a local JSON file containing a Cucumber test report (optional)
 * `--open` (or `-o`) to open the HTML report in your browser after the script completes
 
+## Altering the order of features
+
+By default the features will appear in the report in the same order that the files are ordered on your computer (alphabetically). To override this order use the `@report-order-N` tag on each feature. Tagged features will appear first, then the others ordered alphabetically. For example:
+
+    @report-order-1
+    Feature: Login
+    ...
+
+    @report-order-2
+    Feature: Registration
+    ...
+
 ## Example
 
 ![Example report](screenshot.png)
