@@ -17,7 +17,14 @@ The script accepts the following arguments:
 
 * `--features` (or `-f`) is the path to a local directory of gherkin feature files
 * `--cucumberjson` (or `-c`) is the path to a local JSON file containing a Cucumber test report (optional)
+* `--reporthtml` (or `-r`) is the path to a previous pumpkin HTML report (optional)
 * `--open` (or `-o`) to open the HTML report in your browser after the script completes
+
+### Saving your results
+
+Pumpkin generates a single HTML file inside which you record the status of each scenario (Descoped, In Progress, Passed, Failed or Blocked). You can set the status for every scenario within a feature, or set each scenario individually. When you're finished, or you want to save your work, click the "Save HTML" button at the top. Your browser will download a new HTML file containing all of your changes. Open this file and carry on making further changes in the future.
+
+The best way to share the report is to generate a PDF by printing it. Pumpkin has a print stylesheet that will create a nice, clean, client-friendly report.
 
 ### Altering the order of features
 
