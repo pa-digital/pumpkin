@@ -33,7 +33,7 @@ CUCUMBER_REPORT = opts[:cucumberjson]
 HTML_REPORT = opts[:reporthtml]
 OPEN_AFTER = opts[:open]
 OUTPUT_DIRECTORY = 'output'
-OUTPUT_FILENAME = 'report.html'
+OUTPUT_FILENAME = 'pumpkin-report.html'
 
 def load_cucumber_json
   return {} if CUCUMBER_REPORT.nil?
@@ -149,7 +149,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{Time.now.strftime("%d/%m/%Y")}'/></div>"
   f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'></textarea></div>"
   f << "<div class='form-group'><div class='form-check'><input class='form-check-input' type='checkbox' value='yes' id='print-steps'><label class='form-check-label' for='print-steps'>Print scenario steps</label></div></div>"
-  f << "<a target='iframe' download='report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a>"
+  f << "<a target='iframe' download='pumpkin-report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a>"
   f << "<h3>Summary</h3>"
   f << "<p class='report-description-print'></p>"
   f << "<table class='table'>"
