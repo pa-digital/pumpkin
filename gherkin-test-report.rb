@@ -4,6 +4,7 @@ require 'cuke_modeler'
 require 'slop'
 require 'colored'
 require 'cgi'
+require 'nokogiri'
 
 def print_ok_message(message)
   print ' ✔ '.green
@@ -22,12 +23,14 @@ end
 
 opts = Slop.parse do |o|
   o.string '-f', '--features', 'path to your feature files', required: true
+  o.string '-r', '--reporthtml', 'path to a previous HTML report file'
   o.string '-c', '--cucumberjson', 'path to cucumber JSON report'
   o.boolean '-o', '--open', 'open the HTML report in your browser when the script completes', default: false
 end
 
 FEATURE_FILE_PATH = opts[:features]
 CUCUMBER_REPORT = opts[:cucumberjson]
+HTML_REPORT = opts[:reporthtml]
 OPEN_AFTER = opts[:open]
 OUTPUT_DIRECTORY = 'output'
 OUTPUT_FILENAME = 'report.html'
@@ -37,6 +40,13 @@ def load_cucumber_json
   exit_with_error("#{CUCUMBER_REPORT} could not be found") unless File.exist?(CUCUMBER_REPORT)
 
   JSON.parse(File.read(CUCUMBER_REPORT))
+end
+
+def load_html_report
+  return {} if HTML_REPORT.nil?
+  exit_with_error("#{HTML_REPORT} could not be found") unless File.exist?(HTML_REPORT)
+
+  File.open(HTML_REPORT) { |f| Nokogiri::HTML(f) }
 end
 
 def load_feature_files
@@ -58,15 +68,28 @@ end
 
 def scenario_status feature_name, scenario_name
   status = ''
-  @report.each do |feature|
-    next unless feature["name"] == feature_name
-    feature['elements'].each do |scenario|
-      next unless scenario["name"] == scenario_name
-      scenario["steps"].each do |step|
-        status = step["result"]["status"]
+
+  # attempt to get the status from a Cucumber test run
+  if @cucumber_report
+    @cucumber_report.each do |feature|
+      next unless feature["name"] == feature_name
+      feature['elements'].each do |scenario|
+        next unless scenario["name"] == scenario_name
+        scenario["steps"].each do |step|
+          status = step["result"]["status"]
+        end
       end
     end
   end
+
+  # attempt to get the status from an HTML report
+  if @html_report
+    if status == ''
+      scenario_cell = @html_report.xpath("//p[contains(text(), \"#{scenario_name}\")]").first
+      status = scenario_cell.parent.parent.css("option[selected]").text unless scenario_cell.nil?
+    end
+  end
+
   status
 end
 
@@ -75,11 +98,11 @@ def format_status status
 end
 
 def feature_status_dropdown
-  return "<select class='feature-status custom-select' style='width:130px;'><option value=''>Change all</option>#{@status_types.map{|s| "<option>#{s}</option>"}}</select>"
+  return "<select class='feature-status custom-select' style='width:130px;'><option value=''>Change all</option>#{@status_types.map{|s| "<option>#{s}</option>"}.join('')}</select>"
 end
 
 def scenario_status_dropdown status
-  return "<select class='scenario-status custom-select' style='width:130px;'>#{@status_types.map{|s| "<option #{'selected="selected"' if s.downcase == status}>#{s}</option>"}}</select>"
+  return "<select class='scenario-status custom-select' style='width:130px;'>#{@status_types.map{|s| "<option #{'selected="selected"' if s == status}>#{s}</option>"}.join('')}</select>"
 end
 
 def format_steps scenario
@@ -102,7 +125,8 @@ def format_scenarios feature_name, items
   html
 end
 
-@report = load_cucumber_json
+@cucumber_report = load_cucumber_json
+@html_report = load_html_report
 @feature_files = load_feature_files
 @status_types = ["Not run","Descoped", "In Progress", "Passed", "Failed", "Blocked"]
 
