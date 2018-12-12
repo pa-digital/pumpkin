@@ -36,14 +36,14 @@ OUTPUT_DIRECTORY = 'output'
 OUTPUT_FILENAME = 'pumpkin-report.html'
 
 def load_cucumber_json
-  return {} if CUCUMBER_REPORT.nil?
+  return nil if CUCUMBER_REPORT.nil?
   exit_with_error("#{CUCUMBER_REPORT} could not be found") unless File.exist?(CUCUMBER_REPORT)
 
   JSON.parse(File.read(CUCUMBER_REPORT))
 end
 
 def load_html_report
-  return {} if HTML_REPORT.nil?
+  return nil if HTML_REPORT.nil?
   exit_with_error("#{HTML_REPORT} could not be found") unless File.exist?(HTML_REPORT)
 
   File.open(HTML_REPORT) { |f| Nokogiri::HTML(f) }
