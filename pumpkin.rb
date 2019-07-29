@@ -26,12 +26,18 @@ opts = Slop.parse do |o|
   o.string '-r', '--reporthtml', 'path to a previous HTML report file'
   o.string '-c', '--cucumberjson', 'path to cucumber JSON report'
   o.boolean '-o', '--open', 'open the HTML report in your browser when the script completes', default: false
+  o.string '-t', '--title', 'set the report title'
+  o.string '-d', '--date', 'set the report date and time'
+  o.string '-n', '--notes', 'set the report notes'
 end
 
 FEATURE_FILE_PATH = opts[:features]
 CUCUMBER_REPORT = opts[:cucumberjson]
 HTML_REPORT = opts[:reporthtml]
 OPEN_AFTER = opts[:open]
+TITLE = opts[:title]
+DATE = opts[:date]
+NOTES = opts[:notes]
 OUTPUT_DIRECTORY = 'output'
 OUTPUT_FILENAME = 'pumpkin-report.html'
 
@@ -145,9 +151,9 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<div class='container'>"
   f << "<span class='logo'></span>"
   f << "<h1>Test Report<br><span class='report-title-print text-muted'></span> <span class='report-date-print text-muted'></span></h1>"
-  f << "<div class='form-group'><input type='text' placeholder='Project Name' class='form-control report-title'/></div>"
-  f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{Time.now.strftime("%d/%m/%Y %H:%M")}'/></div>"
-  f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'></textarea></div>"
+  f << "<div class='form-group'><input type='text' placeholder='Project Name' class='form-control report-title' value='#{TITLE}'/></div>"
+  f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{DATE.nil? ? Time.now.strftime("%d/%m/%Y %H:%M") : DATE}'/></div>"
+  f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'>#{NOTES.split("\\n").join("<br>")}</textarea></div>"
   f << "<div class='form-group'><div class='form-check'><input class='form-check-input' type='checkbox' value='yes' id='print-steps'><label class='form-check-label' for='print-steps'>Print scenario steps</label></div></div>"
   f << "<a target='iframe' download='pumpkin-report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a>"
   f << "<h3>Summary</h3>"

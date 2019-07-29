@@ -19,6 +19,9 @@ The script accepts the following arguments:
 * `--cucumberjson` (or `-c`) is the path to a local JSON file containing a Cucumber test report (optional)
 * `--reporthtml` (or `-r`) is the path to a previous pumpkin HTML report (optional)
 * `--open` (or `-o`) to open the HTML report in your browser after the script completes
+* `--title` (or `-t`) to set the report title
+* `--date` (or `-d`) to set the report date/time
+* `--notes` (or `-n`) to set the report notes
 
 ### Saving your results
 
