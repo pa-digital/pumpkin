@@ -146,7 +146,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<span class='logo'></span>"
   f << "<h1>Test Report<br><span class='report-title-print text-muted'></span> <span class='report-date-print text-muted'></span></h1>"
   f << "<div class='form-group'><input type='text' placeholder='Project Name' class='form-control report-title'/></div>"
-  f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{Time.now.strftime("%d/%m/%Y")}'/></div>"
+  f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{Time.now.strftime("%d/%m/%Y %H:%M")}'/></div>"
   f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'></textarea></div>"
   f << "<div class='form-group'><div class='form-check'><input class='form-check-input' type='checkbox' value='yes' id='print-steps'><label class='form-check-label' for='print-steps'>Print scenario steps</label></div></div>"
   f << "<a target='iframe' download='pumpkin-report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a>"
