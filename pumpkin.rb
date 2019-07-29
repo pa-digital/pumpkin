@@ -75,7 +75,7 @@ def load_feature_files
 end
 
 def is_excluded_by_tag(item_tags)
-  return (EXCLUDE_TAGS.split(' ') & item_tags.tags.map{|t| t.name}).count > 0
+  return EXCLUDE_TAGS && (EXCLUDE_TAGS.split(' ') & item_tags.tags.map{|t| t.name}).count > 0
 end
 
 def scenario_status feature_name, scenario_name
@@ -160,7 +160,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<h1>Test Report<br><span class='report-title-print text-muted'></span> <span class='report-date-print text-muted'></span></h1>"
   f << "<div class='form-group'><input type='text' placeholder='Project Name' class='form-control report-title' value='#{TITLE}'/></div>"
   f << "<div class='form-group'><input type='text' placeholder='Date' class='form-control report-date' value='#{DATE.nil? ? Time.now.strftime("%d/%m/%Y %H:%M") : DATE}'/></div>"
-  f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'>#{NOTES.split("\\n").join("<br>")}</textarea></div>"
+  f << "<div class='form-group'><textarea class='form-control report-description' placeholder='Notes'>#{NOTES.nil? ? '' : NOTES.split("\\n").join("<br>")}</textarea></div>"
   f << "<div class='form-group'><div class='form-check'><input class='form-check-input' type='checkbox' value='yes' id='print-steps'><label class='form-check-label' for='print-steps'>Print scenario steps</label></div></div>"
   f << "<a target='iframe' download='pumpkin-report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a>"
   f << "<h3>Summary</h3>"
