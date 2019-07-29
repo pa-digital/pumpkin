@@ -56,6 +56,10 @@ h3 {
   display: none;
 }
 
+.badge {
+  text-transform: capitalize;
+}
+
 @media print {
 
   .remove-feature,

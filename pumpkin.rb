@@ -72,11 +72,11 @@ def scenario_status feature_name, scenario_name
   # attempt to get the status from a Cucumber test run
   if @cucumber_report
     @cucumber_report.each do |feature|
-      next unless feature["name"] == feature_name
+      next unless feature["name"].strip == feature_name.strip
       feature['elements'].each do |scenario|
-        next unless scenario["name"] == scenario_name
+        next unless scenario["name"].strip == scenario_name.strip
         scenario["steps"].each do |step|
-          status = step["result"]["status"]
+          status = step["result"]["status"].downcase
         end
       end
     end
@@ -86,7 +86,7 @@ def scenario_status feature_name, scenario_name
   if @html_report
     if status == ''
       scenario_cell = @html_report.xpath("//p[contains(text(), \"#{scenario_name}\")]").first
-      status = scenario_cell.parent.parent.css("option[selected]").text unless scenario_cell.nil?
+      status = scenario_cell.parent.parent.css("option[selected]").text.downcase unless scenario_cell.nil?
     end
   end
 
@@ -98,11 +98,11 @@ def format_status status
 end
 
 def feature_status_dropdown
-  return "<select class='feature-status custom-select' style='width:130px;'><option value=''>Change all</option>#{@status_types.map{|s| "<option>#{s}</option>"}.join('')}</select>"
+  return "<select class='feature-status custom-select' style='width:130px;'><option value=''>Change all</option>#{@status_types.map{|s| "<option value='#{s.downcase}'>#{s}</option>"}.join('')}</select>"
 end
 
 def scenario_status_dropdown status
-  return "<select class='scenario-status custom-select' style='width:130px;'>#{@status_types.map{|s| "<option #{'selected="selected"' if s == status}>#{s}</option>"}.join('')}</select>"
+  return "<select class='scenario-status custom-select' style='width:130px;'>#{@status_types.map{|s| "<option value='#{s.downcase}' #{'selected="selected"' if s.downcase == status}>#{s}</option>"}.join('')}</select>"
 end
 
 def format_steps scenario
@@ -136,7 +136,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<meta charset='utf-8'/>"
   f << "<style type='text/css'>#{File.read('assets/bootstrap.min.css')}</style>"
   f << "<style type='text/css'>#{File.read('assets/application.css')}</style>"
-  f << "<script>window.STATUS_TYPES = #{@status_types.to_json};</script>"
+  f << "<script>window.STATUS_TYPES = #{@status_types.map{|s| s.downcase}.to_json};</script>"
   f << "<script>#{File.read('assets/jquery.js')}</script>"
   f << "<script>#{File.read('assets/application.js')}</script>"
   f << "</head>"
