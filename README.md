@@ -21,7 +21,8 @@ The script accepts the following arguments:
 * `--open` (or `-o`) to open the HTML report in your browser after the script completes
 * `--title` (or `-t`) to set the report title
 * `--date` (or `-d`) to set the report date/time
-* `--notes` (or `-n`) to set the report notes
+* `--notes` (or `-n`) to set the report notes, use "\n" to add newlines
+* `--exclude` (or `-e`) a space-separated list of tags to exclude e.g. "@wip @regression"
 
 ### Saving your results
 

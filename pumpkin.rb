@@ -29,6 +29,7 @@ opts = Slop.parse do |o|
   o.string '-t', '--title', 'set the report title'
   o.string '-d', '--date', 'set the report date and time'
   o.string '-n', '--notes', 'set the report notes'
+  o.string '-e', '--exclude', 'a list of tags to exclude'
 end
 
 FEATURE_FILE_PATH = opts[:features]
@@ -38,6 +39,7 @@ OPEN_AFTER = opts[:open]
 TITLE = opts[:title]
 DATE = opts[:date]
 NOTES = opts[:notes]
+EXCLUDE_TAGS = opts[:exclude]
 OUTPUT_DIRECTORY = 'output'
 OUTPUT_FILENAME = 'pumpkin-report.html'
 
@@ -70,6 +72,10 @@ def load_feature_files
     print_message("Found feature '#{f[:feature].feature.name}' with #{f[:feature].feature.scenarios.count} scenarios")
     f[:feature]
   }
+end
+
+def is_excluded_by_tag(item_tags)
+  return (EXCLUDE_TAGS.split(' ') & item_tags.tags.map{|t| t.name}).count > 0
 end
 
 def scenario_status feature_name, scenario_name
@@ -126,6 +132,7 @@ def format_scenarios feature_name, items
   items.each_with_index do |scenario, i|
     scenario_name = scenario.name
     scenario_status = scenario_status(feature_name, scenario_name)
+    next if is_excluded_by_tag(scenario)
     html += "<tr class='scenario'><td style='width:1px' class='text-muted index'></td><td><button class='btn btn-outline-secondary btn-sm float-right remove-scenario' tabindex='-1'>Remove scenario</button><p>#{scenario_name.capitalize}</p>#{format_steps(scenario)}</td><td style='width:1px'>#{format_status(scenario_status)}</td></tr>"
   end
   html
@@ -163,6 +170,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
   f << "<tbody id='results'></tbody>"
   f << "</table>"
   @feature_files.each do |feature_file|
+    next if is_excluded_by_tag(feature_file.feature)
     feature_name = feature_file.feature.name
     f << "<div class='feature'>"
     f << "<h3>Feature: #{feature_name} <div class='float-right feature-actions'><button class='btn btn-outline-secondary btn-sm remove-feature'>Remove feature</button><div class='float-right'>#{feature_status_dropdown}</div></div></h3>"
