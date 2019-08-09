@@ -88,6 +88,8 @@ def scenario_status feature_name, scenario_name
       feature['elements'].each do |scenario|
         next unless scenario["name"].strip == scenario_name.strip
         scenario["steps"].each do |step|
+          # if one step has failed, the whole scenario has failed
+          next if status == 'failed'
           status = step["result"]["status"].downcase
         end
       end
