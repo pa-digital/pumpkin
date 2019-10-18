@@ -26,9 +26,18 @@ textarea {
   height: 150px;
 }
 
-h3 {
+.feature-header {
   margin-top: 60px;
   margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.feature-tags {
+  display: block;
+}
+
+.feature-tags .badge {
+  margin-right: 5px;
 }
 
 .feature-actions button {

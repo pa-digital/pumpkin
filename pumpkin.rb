@@ -140,6 +140,17 @@ def format_scenarios feature_name, items
   html
 end
 
+def format_tags feature
+  html = ''
+  return html if feature.tags.nil?
+  html += '<div class="feature-tags">'
+  feature.tags.each do |tag|
+    html += "<span class='badge badge-primary'>#{tag.name}</span>"
+  end
+  html += "</div>"
+  html
+end
+
 @cucumber_report = load_cucumber_json
 @html_report = load_html_report
 @feature_files = load_feature_files
@@ -175,7 +186,7 @@ open("#{OUTPUT_DIRECTORY}/#{OUTPUT_FILENAME}", 'w') { |f|
     next if is_excluded_by_tag(feature_file.feature)
     feature_name = feature_file.feature.name
     f << "<div class='feature'>"
-    f << "<h3>Feature: #{feature_name} <div class='float-right feature-actions'><button class='btn btn-outline-secondary btn-sm remove-feature'>Remove feature</button><div class='float-right'>#{feature_status_dropdown}</div></div></h3>"
+    f << "<div class='feature-header'><div class='float-left'><h3>Feature: #{feature_name}</h3>#{format_tags(feature_file.feature)}</div><div class='float-right feature-actions'><button class='btn btn-outline-secondary btn-sm remove-feature'>Remove feature</button><div class='float-right'>#{feature_status_dropdown}</div></div></div>"
     f << "<table class='table table-condensed'>"
     f << "<thead><th colspan='2'>Scenario</th><th style='width:1px'>Status</th></thead>"
     f << "<tbody>"
