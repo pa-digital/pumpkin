@@ -4,8 +4,8 @@ This application generates a test report directly from your gherkin feature file
 
 ## Installation
 
-1. Clone the repo
-2. Run `npm install` to install the dependencies
+1. `npm install pumpkin --save-dev`
+2. Run `pumpkin` in your project
 
 ## Usage
 

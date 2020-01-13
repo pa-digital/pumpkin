@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const args = require("yargs").argv;
 const fs = require("fs");
 const glob = require("glob");
