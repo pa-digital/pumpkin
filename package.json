@@ -11,6 +11,15 @@
   "bin": {
     "pumpkin": "./index.js"
   },
+  "keywords": [
+    "pumpkin",
+    "gherkin",
+    "cucumber",
+    "features",
+    "scenarios",
+    "qa",
+    "bdd"
+  ],
   "dependencies": {
     "colors": "^1.4.0",
     "escape-html": "^1.0.3",
