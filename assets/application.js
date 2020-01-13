@@ -82,7 +82,7 @@ function handleDateChange(e) {
   var input = $(e.target);
   var text = input.val();
   input.attr('value', text);
-  $('.report-date-print').html('(' + text + ')');
+  $('.report-date-print').html(text.trim());
   setFileName();
 }
 
