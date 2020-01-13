@@ -4,7 +4,7 @@ This application generates a test report directly from your gherkin feature file
 
 ## Installation
 
-    $ npm install pumpkin
+    $ npm install @padigital/pumpkin
 
 ## Usage
 
