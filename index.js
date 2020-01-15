@@ -21,14 +21,7 @@ const NOTES = args.notes;
 const EXCLUDE_TAGS = args.exclude;
 const OUTPUT_DIRECTORY = path.resolve("pumpkin", ".");
 const OUTPUT_FILE = path.resolve(`${OUTPUT_DIRECTORY}/report.html`, ".");
-const STATUS_TYPES = [
-  "Not run",
-  "Descoped",
-  "In Progress",
-  "Passed",
-  "Failed",
-  "Blocked"
-];
+const STATUS_TYPES = ["Not run", "Descoped", "In Progress", "Passed", "Failed", "Blocked"];
 
 function printOkMessage(message) {
   console.log(message.green);
@@ -52,9 +45,7 @@ function loadCucumberJson() {
 }
 
 function featureScenarios(feature) {
-  return feature.children.filter(
-    c => c.type === "Scenario" || c.type === "ScenarioOutline"
-  );
+  return feature.children.filter(c => c.type === "Scenario" || c.type === "ScenarioOutline");
 }
 
 function loadHtmlReport() {
@@ -62,8 +53,6 @@ function loadHtmlReport() {
   if (!fs.existsSync(HTML_REPORT)) {
     exitWithError(`${HTML_REPORT} could not be found`);
   }
-  //return cheerio.load(fs.readFileSync(HTML_REPORT))
-  // return htmlParser.parse(fs.readFileSync(HTML_REPORT).toString())
   return new JSDOM(fs.readFileSync(HTML_REPORT).toString());
 }
 
@@ -77,9 +66,7 @@ function loadFeatureFiles() {
   files = files.map((file, i) => {
     const featureFile = gherkinParser.parse(fs.readFileSync(file, "utf8"));
     const feature = featureFile.feature;
-    let order = feature.tags
-      .map(tag => tag.name)
-      .find(tag => tag.startsWith("@report-order-"));
+    let order = feature.tags.map(tag => tag.name).find(tag => tag.startsWith("@report-order-"));
     order = order ? parseInt(order.replace(/^@report-order-/, "")) : 999 + i;
     return {
       feature: feature,
@@ -91,9 +78,7 @@ function loadFeatureFiles() {
     .sort((a, b) => a.order - b.order)
     .map(f => {
       printMessage(
-        `+ Found feature '${f.feature.name}' with ${
-          featureScenarios(f.feature).length
-        } scenarios`
+        `+ Found feature '${f.feature.name}' with ${featureScenarios(f.feature).length} scenarios`
       );
       return f.feature;
     });
@@ -101,9 +86,7 @@ function loadFeatureFiles() {
 
 function isExcludedByTag(tags) {
   if (!EXCLUDE_TAGS) return;
-  return tags
-    .map(tag => tag.name)
-    .filter(tag => EXCLUDE_TAGS.split(" ").includes(tag)).length;
+  return tags.map(tag => tag.name).filter(tag => EXCLUDE_TAGS.split(" ").includes(tag)).length;
 }
 
 function scenarioStatus(featureName, scenarioName) {
@@ -138,9 +121,7 @@ function scenarioStatus(featureName, scenarioName) {
 }
 
 function formatStatus(status) {
-  return `<span class='scenario-status-print'></span>${scenarioStatusDropdown(
-    status
-  )}`;
+  return `<span class='scenario-status-print'></span>${scenarioStatusDropdown(status)}`;
 }
 
 function featureStatusDropdown() {
@@ -183,9 +164,7 @@ function formatExampleTable(table) {
   }
   if (table.tableHeader) {
     html += "<tr>";
-    html += table.tableHeader.cells
-      .map(c => `<th class="small">${c.value}</th>`)
-      .join("");
+    html += table.tableHeader.cells.map(c => `<th class="small">${c.value}</th>`).join("");
     html += "</tr>";
   }
   if (table.tableBody) {
@@ -203,9 +182,7 @@ function formatExampleTable(table) {
 function formatSteps(scenario) {
   let html = '<p class="scenario-steps small text-muted">';
   scenario.steps.forEach(step => {
-    html += `<span class="scenario-step">${step.keyword} ${escapeHtml(
-      step.text
-    )}</span>`;
+    html += `<span class="scenario-step">${step.keyword} ${escapeHtml(step.text)}</span>`;
     if (step.argument) {
       if (step.argument.type === "DocString") {
         html += `<span class="scenario-doc-string">${step.argument.content}</span>`;
@@ -265,16 +242,10 @@ let report = `
   <style type='text/css'>${fs.readFileSync(
     path.join(__dirname, "assets/bootstrap.min.css")
   )}</style>
-  <style type='text/css'>${fs.readFileSync(
-    path.join(__dirname, "assets/application.css")
-  )}</style>
-  <script>window.STATUS_TYPES = ${JSON.stringify(
-    STATUS_TYPES.map(s => s.toLowerCase())
-  )};</script>
+  <style type='text/css'>${fs.readFileSync(path.join(__dirname, "assets/application.css"))}</style>
+  <script>window.STATUS_TYPES = ${JSON.stringify(STATUS_TYPES.map(s => s.toLowerCase()))};</script>
   <script>${fs.readFileSync(path.join(__dirname, "assets/jquery.js"))}</script>
-  <script>${fs.readFileSync(
-    path.join(__dirname, "assets/application.js")
-  )}</script>
+  <script>${fs.readFileSync(path.join(__dirname, "assets/application.js"))}</script>
 </head>
 <body>
   <iframe id='iframe' style='display:none;'></iframe>
@@ -317,10 +288,7 @@ featureFiles.forEach(featureFile => {
     </div>
     <table class='table table-condensed'>
       <thead><th colspan='2'>Scenario</th><th style='width:1px'>Status</th></thead>
-      <tbody>${formatScenarios(
-        featureFile.name,
-        featureScenarios(featureFile)
-      )}</tbody>
+      <tbody>${formatScenarios(featureFile.name, featureScenarios(featureFile))}</tbody>
     </table>
   </div>`;
 });

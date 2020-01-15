@@ -98,7 +98,7 @@ textarea {
 
 .scenario-example caption {
   font-style: italic;
-  padding: .3rem;
+  padding: 0.3rem;
 }
 
 .report-title-print,
@@ -117,7 +117,6 @@ textarea {
 }
 
 @media print {
-
   .remove-feature,
   .remove-scenario,
   .save-report,
@@ -144,12 +143,12 @@ textarea {
   }
 
   .report-description-print {
-    display: block
+    display: block;
   }
 
   .report-description-print br {
     display: block;
-    content: '';
+    content: "";
     margin-bottom: 0.75em;
   }
 
