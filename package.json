@@ -1,6 +1,6 @@
 {
   "name": "@padigital/pumpkin",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "Generate a test report directly from gherkin feature files. Cucumber and manual tests in blissful harmony.",
   "main": "index.js",
   "scripts": {

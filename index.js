@@ -2,6 +2,7 @@
 
 const args = require("yargs").argv;
 const fs = require("fs");
+const path = require("path");
 const glob = require("glob");
 const gherkin = require("gherkin");
 const escapeHtml = require("escape-html");
@@ -18,8 +19,8 @@ const TITLE = args.title;
 const DATE = args.date;
 const NOTES = args.notes;
 const EXCLUDE_TAGS = args.exclude;
-const OUTPUT_DIRECTORY = "output";
-const OUTPUT_FILENAME = "pumpkin-report.html";
+const OUTPUT_DIRECTORY = path.resolve("pumpkin", ".");
+const OUTPUT_FILE = path.resolve(`${OUTPUT_DIRECTORY}/report.html`, ".");
 const STATUS_TYPES = [
   "Not run",
   "Descoped",
@@ -261,13 +262,19 @@ let report = `
 <html>
 <head>
   <meta charset='utf-8'/>
-  <style type='text/css'>${fs.readFileSync("assets/bootstrap.min.css")}</style>
-  <style type='text/css'>${fs.readFileSync("assets/application.css")}</style>
+  <style type='text/css'>${fs.readFileSync(
+    path.join(__dirname, "assets/bootstrap.min.css")
+  )}</style>
+  <style type='text/css'>${fs.readFileSync(
+    path.join(__dirname, "assets/application.css")
+  )}</style>
   <script>window.STATUS_TYPES = ${JSON.stringify(
     STATUS_TYPES.map(s => s.toLowerCase())
   )};</script>
-  <script>${fs.readFileSync("assets/jquery.js")}</script>
-  <script>${fs.readFileSync("assets/application.js")}</script>
+  <script>${fs.readFileSync(path.join(__dirname, "assets/jquery.js"))}</script>
+  <script>${fs.readFileSync(
+    path.join(__dirname, "assets/application.js")
+  )}</script>
 </head>
 <body>
   <iframe id='iframe' style='display:none;'></iframe>
@@ -320,10 +327,12 @@ featureFiles.forEach(featureFile => {
 
 report += `</div></body></html>`;
 
-fs.writeFileSync(`${OUTPUT_DIRECTORY}/${OUTPUT_FILENAME}`, report, "utf8");
+// create the output directory if it doesn't exist
+fs.mkdirSync(OUTPUT_DIRECTORY, { recursive: true });
 
-printOkMessage(`Report generated at ${OUTPUT_DIRECTORY}/${OUTPUT_FILENAME}`);
+// write the report file
+fs.writeFileSync(OUTPUT_FILE, report, "utf8");
 
-if (OPEN_AFTER) {
-  shell.exec(`open ${OUTPUT_DIRECTORY}/${OUTPUT_FILENAME}`);
-}
+printOkMessage(`Report generated at ${OUTPUT_FILE}`);
+
+if (OPEN_AFTER) shell.exec(`open ${OUTPUT_FILE}`);
