@@ -172,7 +172,7 @@ function handleRemoveScenarioClick(e) {
 }
 
 function handlePrintStepsChange(e) {
-  if ($(this).val() == "yes") {
+  if ($(this).get(0).checked) {
     $("body").addClass("print-scenario-steps");
   } else {
     $("body").removeClass("print-scenario-steps");
