@@ -147,7 +147,7 @@ function handleDateChange(e) {
 function handleDescriptionChange(e) {
   var input = $(e.target);
   var text = input.val();
-  input.get(0).innerText = text;
+  input.get(0).innerHTML = text;
   $(".report-description-print").html(markdown(text));
 }
 

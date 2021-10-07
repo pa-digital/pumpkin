@@ -259,7 +259,7 @@ let report = `
       DATE ? DATE : now
     }'/></div>
     <div class='form-group'><textarea class='form-control report-description' placeholder='Notes'>${
-      NOTES ? NOTES.split("\n").join("<br>") : ""
+      NOTES ? NOTES.split("\\n").join("\n") : ""
     }</textarea></div>
     <div class='form-group'><div class='form-check'><input class='form-check-input' type='checkbox' value='yes' id='print-steps'><label class='form-check-label' for='print-steps'>Print scenario steps</label></div></div>
     <div class='form-group'><a target='iframe' download='pumpkin-report.html' href='#' onclick='saveHTML();' class='btn btn-primary save-report'>Save HTML</a></div>
